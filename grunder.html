@@ -1,0 +1,165 @@
+<html>
+	<head>
+		<title>TEMPO</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link rel="stylesheet" type="text/css" href="style.css">
+  		<link rel="stylesheet" type="text/css" href="styles/github.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+		<link rel="shortcut icon" href="img/TempoLogo.png">
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="script.js"></script>
+
+
+
+	</head>
+
+	<body>
+		<header>
+
+		<div id=logoContain><a href="index.html"><img src="img/TempoLogo.png" class="logo"></a>
+				<img id=menuButton src=img/menu.png>
+
+		</div>
+	</header>
+
+		<div id=nav class=nav>
+				<div class="link"> <a href="index.html">Intro</a></div>
+				<div class="link" id="currentNav"><a href="grunder.html">1. Skapa grunden</a></div>
+				<div class="link"><a href="spritesheet.html">2. Spritesheet</a></div>
+				<div class="link"><a href="sprite.html">3. Sprites</a></div>
+				<div class="link"><a href="gameEngine.html">4. GameEngine</a></div>
+				<div class="link"><a href="kollision.html">5. Kollision</a></div>
+				<div class="link"><a href="keyboard.html">6. Keyboard</a></div>
+                <div class="link"><a href="bakgrund.html">7.Bakgrund</a></div>
+				<div class="link"><a href="animation.html">8. Animation</a></div>
+				<div class="link"><a href="laddabanor.html">9. Ladda banor</a></div>
+				<div class="link"><a href="finlir.html">10. Slut</a></div>
+
+			</div>
+			<div id=navMobile class=nav>
+						<div class="link"> <a href="index.html">Intro</a></div>
+						<div class="link" id="currentNav"><a href="grunder.html">1. Skapa grunden</a></div>
+						<div class="link"><a href="spritesheet.html">2. Spritesheet</a></div>
+						<div class="link"><a href="sprite.html">3. Sprites</a></div>
+						<div class="link"><a href="gameEngine.html">4. GameEngine</a></div>
+						<div class="link"><a href="kollision.html">5. Kollision</a></div>
+						<div class="link"><a href="keyboard.html">6. Keyboard</a></div>
+                <div class="link"><a href="bakgrund.html">7.Bakgrund</a></div>
+						<div class="link"><a href="animation.html">8. Animation</a></div>
+						<div class="link"><a href="laddabanor.html">9. Ladda banor</a></div>
+						<div class="link"><a href="finlir.html">10. Finlir</a></div>
+			</div>
+
+
+				<div class="video"><iframe src="https://www.youtube.com/embed/5V5q-J0Z6WM" frameborder="0" allowfullscreen></iframe></div>
+
+				<div class=resources><h3>Grunder</h3><p>I dagens avsnitt börjar vi med vårt projekt. Vi skapar tre väsentliga klasser för vårt spel, Window, GameEngine och GamePanel. Window-klassen kommer skapa ett fönster på skärmen. GamePanel kommer förvara all vår framtida bildinformation och positioner till alla våra sprites. GameEngine kommer vara vårt tick-system. Ett tick-system gör så att spelet uppdateras ett antal gånger per sekund, i vårt fall kommer det vara 60-gånger per sekund.</p>
+					<a download href="downloads/TempoEp1.zip" class="downloadText">	<img src="img/folder.png" class="imgDownload">TempoEp1.zip</a>
+
+				</div>
+
+				<div id= "classes">
+					<ul class= "classNames">
+					<li class="className current" id="name1" onclick="showCode(event,class1)">GamePanel.java</li>
+					<li class="className" id="name2" onclick="showCode(event,class2)">Window.java</li>
+					<li class="className" id="name3" onclick="showCode(event,class3)">GameEngine.java</li>
+					<li class="className" id="name4" onclick="showCode(event,class4)">Tempo.java</li>
+					</ul>
+					<div id=code>
+						<div id=class1>		<pre><code class = java>package tempo;
+
+import java.awt.Graphics;
+import javax.swing.JPanel;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class GamePanel extends JPanel {
+    
+    public void paintComponent(Graphics g) {
+        
+    }
+
+}
+
+</code></pre></div>
+<div id="class2"><pre><code class = java>package tempo;
+
+import javax.swing.JFrame;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class Window extends JFrame {
+    
+    private GamePanel gp;
+    private GameEngine ge;
+    
+    public Window() {
+        gp = new GamePanel();
+        ge = new GameEngine(gp);
+        setTitle(Tempo.NAME);
+        setSize(Tempo.WIDTH, Tempo.HEIGHT);
+        setVisible(true);
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        add(gp);
+        
+    }
+
+}
+
+	</code></pre></div>
+	<div id=class3>		<pre><code class = java>
+package tempo;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class GameEngine {
+    
+    GamePanel gp;
+    
+    public GameEngine(GamePanel gp) {
+        this.gp = gp;
+    }
+
+}
+
+</code></pre></div>
+<div id=class4>		<pre><code class = java>
+package tempo;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class Tempo {
+
+    public static final String NAME = "Tempo";
+    public static final int WIDTH = 1280;
+    public static final int HEIGHT = 768;
+    
+    public Tempo() {
+        new Window();
+    }
+    
+    public static void main(String[] args) {
+        new Tempo();
+    }
+}
+</code></pre></div>
+</div>
+</div>
+	<footer>Contact:<br>tempo@gmail.com</footer>
+
+
+	</body>
+</html>

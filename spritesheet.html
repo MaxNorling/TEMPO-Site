@@ -1,0 +1,148 @@
+<html>
+	<head>
+		<title>TEMPO</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link rel="stylesheet" type="text/css" href="style.css">
+  		<link rel="stylesheet" type="text/css" href="styles/github.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+		<link rel="shortcut icon" href="img/TempoLogo.png">
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="script.js"></script>
+
+
+
+	</head>
+
+	<body>
+		<header>
+
+		<div id=logoContain><a href="index.html"><img src="img/TempoLogo.png" class="logo"></a>
+				<img id=menuButton src=img/menu.png>
+
+		</div>
+	</header>
+
+		<div id=nav class=nav>
+				<div class="link"> <a href="index.html">Intro</a></div>
+				<div class="link"><a href="grunder.html">1. Skapa grunden</a></div>
+				<div class="link"id="currentNav"><a href="spritesheet.html">2. Spritesheet</a></div>
+				<div class="link"><a href="sprite.html">3. Sprites</a></div>
+				<div class="link"><a href="gameEngine.html">4. GameEngine</a></div>
+				<div class="link"><a href="kollision.html">5. Kollision</a></div>
+				<div class="link"><a href="keyboard.html">6. Keyboard</a></div>
+                <div class="link"><a href="bakgrund.html">7.Bakgrund</a></div>
+				<div class="link"><a href="animation.html">8. Animation</a></div>
+				<div class="link"><a href="laddabanor.html">9. Ladda banor</a></div>
+				<div class="link"><a href="finlir.html">10. Slut</a></div>
+			</div>
+			<div id=navMobile class=nav>
+						<div class="link"> <a href="index.html">Intro</a></div>
+						<div class="link"><a href="grunder.html">1. Skapa grunden</a></div>
+						<div class="link" id="currentNav"><a href="spritesheet.html">2. Spritesheet</a></div>
+						<div class="link"><a href="sprite.html">3. Sprites</a></div>
+						<div class="link"><a href="gameEngine.html">4. GameEngine</a></div>
+						<div class="link"><a href="kollision.html">5. Kollision</a></div>
+						<div class="link"><a href="keyboard.html">6. Keyboard</a></div>
+                <div class="link"><a href="bakgrund.html">7.Bakgrund</a></div>
+						<div class="link"><a href="animation.html">8. Animation</a></div>
+						<div class="link"><a href="laddabanor.html">9. Ladda banor</a></div>
+						<div class="link"><a href="finlir.html">10. Slut</a></div>
+			</div>
+
+
+				<div class="video"><iframe src="https://www.youtube.com/embed/xdlQ5YujRHE" frameborder="0" allowfullscreen></iframe></div>
+
+				<div class=resources>
+				    <h3>Spritesheet</h3>
+					<p>
+				I detta avsnitt lägger vi grunden för all upprepande och rörande grafik i spelet, till exempel: terräng, karaktärer, bakgrunder och föremål. Vi gör klassen “Spritesheet” och går igenom hur ett spritesheet är uppbyggt samt hur det fungerar. Klassen importerar en bild som innehåller alla bilder som kommer att användas i spelet. Den efterfrågade bilden “klipps ut” ur den “stora bilden” och returneras till frågande klass.
+
+					<br></p>
+
+					<a download href="img/sheet.png" class="downloadText"><img src="img/sheet.png" class="imgDownload" id="sheet">sheet.png</a>
+					<img src="img/sheet.png" class="largeImg">
+					<a download href="downloads/TempoEp2.zip" class="downloadText">	<img src="img/folder.png" class="imgDownload">TempoEp2.zip</a>
+
+				</div>
+
+				<div id= "classes">
+					<ul class= "classNames">
+					<li class="className current" id="name1" onclick="showCode(event,class1)">Spritesheet.java</li>
+					</ul>
+
+					<div id=code>
+						<div id=class1>		<pre><code class = java>package tempo_tutorial;
+
+import java.awt.image.*;
+import java.io.File;
+import javax.imageio.ImageIO;
+
+public class Spritesheet {
+
+    //Variabeln "sheet" kommer vara bilden vi hämtar alla sprites ifrån
+    BufferedImage sheet = null;
+
+    /**
+     * Läser in spritesheet
+     */
+
+    public Spritesheet(){
+        try {
+            sheet = ImageIO.read(new File("src/resources/pics/sheet.png"));
+        } catch(Exception e) {}
+    }
+
+    /**
+     * Hämtar del utav spritesheet utifrån givna värden
+     * @param row antal rader
+     * @param column antal kolumner
+     * @param height höjd i kolumner
+     * @param width höjd i rader
+     * @return Sprite (BufferedImage)
+     */
+
+    public BufferedImage getSprite(int row, int column, int height, int width){
+        // Längden på en rad/kolumn i spritesheet i pixlar
+        int a = 32;
+        try {
+            //Hämtar sprite
+            return sheet.getSubimage(row*a, column*a, height*a, width*a);
+        } catch(Exception e) {
+            //Hämtar error-sprite om värden går utanför ss storlek
+            return sheet.getSubimage(3*a, 0, a, a);
+        }
+    }
+
+    /**
+     * Läser in en bild baserat på sökväg
+     * @param content sökväg
+     * @return Bild (BufferedImage)
+     */
+    public BufferedImage getImage(String content){
+        //Deklarerar variabel
+        BufferedImage tempImage = null;
+        try {
+            //Letar efter efterfrågad fil
+            tempImage = ImageIO.read(new File(content));
+        } catch(Exception e) {
+            //Om filen inte hittas, skrivs error-meddelande
+            System.out.println(content + "-filen kunde inte hittas");
+        }
+        return tempImage;
+    }
+
+}
+}
+
+</pre></code></div>
+	</div>
+</div>
+	<footer>Contact:<br>tempo@gmail.com</footer>
+		</div>
+
+	</body>
+</html>

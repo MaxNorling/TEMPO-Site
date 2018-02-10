@@ -1,0 +1,346 @@
+<html>
+	<head>
+		<title>TEMPO</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link rel="stylesheet" type="text/css" href="style.css">
+  		<link rel="stylesheet" type="text/css" href="styles/github.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+		<link rel="shortcut icon" href="img/TempoLogo.png">
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="script.js"></script>
+
+
+
+	</head>
+
+	<body>
+		<header>
+
+		<div id=logoContain><a href="index.html"><img src="img/TempoLogo.png" class="logo"></a>
+				<img id=menuButton src=img/menu.png>
+
+		</div>
+	</header>
+
+		<div id=nav class=nav>
+				<div class="link"> <a href="index.html">Intro</a></div>
+				<div class="link"><a href="grunder.html">1. Skapa grunden</a></div>
+				<div class="link"><a href="spritesheet.html">2. Spritesheet</a></div>
+				<div class="link"><a href="sprite.html">3. Sprites</a></div>
+				<div class="link"><a href="gameEngine.html">4. GameEngine</a></div>
+				<div class="link"><a href="kollision.html">5. Kollision</a></div>
+				<div class="link" id="currentNav"><a href="keyboard.html">6. Keyboard</a></div>
+                <div class="link"><a href="bakgrund.html">7.Bakgrund</a></div>
+				<div class="link"><a href="animation.html">8. Animation</a></div>
+				<div class="link"><a href="laddabanor.html">9. Ladda banor</a></div>
+				<div class="link"><a href="finlir.html">10. Slut</a></div>
+
+			</div>
+			<div id=navMobile class=nav>
+						<div class="link"> <a href="index.html">Intro</a></div>
+						<div class="link"><a href="grunder.html">1. Skapa grunden</a></div>
+						<div class="link"><a href="spritesheet.html">2. Spritesheet</a></div>
+						<div class="link"><a href="sprite.html">3. Sprites</a></div>
+						<div class="link"><a href="gameEngine.html">4. GameEngine</a></div>
+						<div class="link"><a href="kollision.html">5. Kollision</a></div>
+						<div class="link" id="currentNav"><a href="keyboard.html">6. Keyboard</a></div>
+                <div class="link"><a href="bakgrund.html">7.Bakgrund</a></div>
+						<div class="link"><a href="animation.html">8. Animation</a></div>
+						<div class="link"><a href="laddabanor.html">9. Ladda banor</a></div>
+						<div class="link"><a href="finlir.html">10. Finlir</a></div>
+			</div>
+
+
+				<div class="video"><iframe src="https://www.youtube.com/embed/asjh1RibTE4" frameborder="0" allowfullscreen></iframe></div>
+
+				<div class=resources><h3>Keyboard</h3>
+I detta avsnitt går vi igenom hur man styr sin karaktär med hjälp av javas KeyListener klass och våran GameEngine klass. KeyListener har tre olika metoder som körs när användaren använder tangentbordet, KeyTyped, KeyPressed och KeyReleased. Vi kommer använda en kombination av KeyPressed och KeyReleased för att styra våran karaktär och vi kommer även att synka upp rörelserna med vårt tick-system så att spelaren rör sig lika fort på alla datorer.
+<br>
+					<a download href="downloads/TempoEp6.zip" class="downloadText">	<img src="img/folder.png" class="imgDownload">TempoEp6.zip</a>
+
+				</div>
+
+				<div id= "classes">
+					<ul class= "classNames">
+					<li class="className current" id="name1" onclick="showCode(event,class1)">Keyboard.java</li>
+					<li class="className" id="name2" onclick="showCode(event,class2)">Window.java</li>
+					<li class="className" id="name3" onclick="showCode(event,class3)">GameEngine.java</li>
+					<li class="className" id="name4" onclick="showCode(event,class4)">Player.java</li>
+					<li class="className" id="name5" onclick="showCode(event,class5)">Sprite.java</li>
+					</ul>
+					<div id=code>
+						<div id=class1>		<pre><code class = java>/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package tempo;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+/**
+ *
+ * @author Elev
+ */
+public class Keyboard implements KeyListener {
+    private GamePanel gp;
+       public Keyboard(GamePanel gp){
+           this.gp = gp;
+       }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        switch(e.getKeyCode()){
+            case KeyEvent.VK_D: gp.getPlayer().setMovingRight(true);break;
+            case KeyEvent.VK_A: gp.getPlayer().setMovingLeft(true); break;
+            case KeyEvent.VK_SPACE:
+                if(gp.getPlayer().getCanJump()){
+                    gp.getPlayer().setVelocityY(-23f);
+                    gp.getPlayer().setCanJump(false);
+                }
+            break;
+      
+        } 
+        
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        switch(e.getKeyCode()){
+            case KeyEvent.VK_D: gp.getPlayer().setMovingRight(false); break;
+            case KeyEvent.VK_A: gp.getPlayer().setMovingLeft(false); break;
+        }
+    }
+    
+}
+</code></pre></div>
+<div id="class2"><pre><code class = java>
+package tempo;
+
+import javax.swing.JFrame;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class Window extends JFrame {
+    
+    private GamePanel gp;
+    private GameEngine ge;
+    
+    public Window() {
+        gp = new GamePanel();
+        ge = new GameEngine(gp);
+        setTitle(Tempo.NAME);
+        setSize(Tempo.WIDTH, Tempo.HEIGHT);
+        setVisible(true);
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        add(gp);
+        <span class=new>addKeyListener(new Keyboard(gp));</span>
+    }
+
+}
+</code></pre></div>
+	<div id=class3>		<pre><code class = java>package tempo;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class GameEngine implements Runnable{
+    
+    GamePanel gp;
+    Collision collision = new Collision();
+    private boolean running = false;
+    
+    public GameEngine(GamePanel gp) {
+        this.gp = gp;
+        start();
+    }
+    
+    public void start(){
+        running = true;
+        new Thread(this).start();
+    }
+    
+    public void run(){
+        long lastTime = System.nanoTime();
+        double nsPerTick = 1000000000D/60D;
+        
+        double delta = 0;
+        
+        while(running){
+            long now = System.nanoTime();
+            delta += (now - lastTime) / nsPerTick;
+            lastTime = now;
+            
+            try{
+                Thread.sleep(16);
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
+            
+            while(delta >= 1){
+                tick();
+                render();
+                delta -= 1;
+            }
+        }
+    }
+    
+    public void tick(){
+       <span class=new>gp.getPlayer().tick();</span>
+        checkCollision();
+    }
+    
+    public void render(){
+        gp.repaint();
+    }
+    public void checkCollision(){
+        if(gp.block.coll){
+            if(collision.getTopCollision(gp.getPlayer().getRectangle(), gp.block.getRectangle())){
+                //KOLLIDERA MED MARK
+              <span class=new>  gp.getPlayer().setGravity(0);
+                gp.getPlayer().setVelocityY(0);
+                gp.getPlayer().setCanJump(true);
+            }
+            else{
+                gp.getPlayer().setGravity(2f);
+            }</span>
+            
+            if(collision.getBottomCollision(gp.getPlayer().getRectangle(), gp.block.getRectangle())){
+                //KOLLIDERA MED TAK
+            }
+            gp.getPlayer().setRectangle(collision.getCollision(gp.getPlayer().getRectangle(), gp.block.getRectangle()));
+        }
+    }
+}
+</code></pre></div>
+<div id=class4>		<pre><code class = java>
+package tempo.sprite;
+
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class Player extends Sprite {
+    <span class=new>private boolean movingLeft, movingRight, canJump;</span>
+ 
+    
+    public Player(int x, int y, int width, int height,  BufferedImage image, float dx, float dy, float gravity) {
+        super(x, y, width, height, image, dx, dy, gravity);
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        Rectangle r = super.getRectangle();
+        g.drawImage(super.getImage(), r.x, r.y, r.width, r.height, null);
+    }
+
+    public void tick(){
+       <span class=new>getRectangle().y += getVelocityY();
+        setVelocityY(getVelocityY()+ getGravity());
+        
+        if(movingLeft){
+            getRectangle().x -=getVelocityX();
+        }
+        if(movingRight){
+            getRectangle().x +=getVelocityX();
+            
+        }
+    }
+    public void setMovingLeft(boolean b){
+        movingLeft = b;
+    }
+    public void setMovingRight(boolean b){
+        movingRight = b;
+    }
+    public boolean getCanJump(){
+        return canJump;
+    }
+    public void setCanJump(boolean b){
+        canJump = b;
+    </span>
+    }
+ 
+}
+
+</code></pre></div>
+<div id=class5>		<pre><code class = java>
+package tempo.sprite;
+
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public abstract class Sprite {
+
+    private Rectangle rect;
+    private BufferedImage image;
+    private float dx, dy, gravity;
+    
+    public Sprite(int x, int y, int width, int height, BufferedImage image, float dx, float dy, float gravity) {
+        this.rect = new Rectangle(x, y, width, height);
+        this.image = image;
+        this.dx = dx;
+        this.dy = dy;
+        this.gravity = gravity;
+    }
+    
+    
+    public abstract void paint(Graphics g);
+    
+    public BufferedImage getImage() {
+        return image;
+    }
+    
+    public Rectangle getRectangle() {
+        return rect;
+    }
+    public void setRectangle(Rectangle rectangle) {
+        this.rect = rectangle;
+    }
+    <span class=new>
+    public float getVelocityX(){
+        return dx;
+    }
+    public void setVelocityY(float f){
+        this.dy = f;
+    }
+    public float getVelocityY(){
+        return dy;
+    }
+    public float getGravity(){
+        return gravity;
+    }
+    public void setGravity(float f ){
+        gravity = f;
+    }</span>
+}
+
+</code></pre></div>
+</div>
+</div>
+	<footer>Contact:<br>tempo@gmail.com</footer>
+
+
+	</body>
+</html>

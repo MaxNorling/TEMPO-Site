@@ -1,0 +1,206 @@
+<html>
+	<head>
+		<title>TEMPO</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link rel="stylesheet" type="text/css" href="style.css">
+  		<link rel="stylesheet" type="text/css" href="styles/github.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+		<link rel="shortcut icon" href="img/TempoLogo.png">
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="script.js"></script>
+
+
+
+	</head>
+
+	<body>
+		<header>
+
+		<div id=logoContain><a href="index.html"><img src="img/TempoLogo.png" class="logo"></a>
+				<img id=menuButton src=img/menu.png>
+
+		</div>
+	</header>
+
+		<div id=nav class=nav>
+				<div class="link"> <a href="index.html">Intro</a></div>
+				<div class="link"><a href="grunder.html">1. Skapa grunden</a></div>
+				<div class="link"><a href="spritesheet.html">2. Spritesheet</a></div>
+				<div class="link"id="currentNav"><a href="sprite.html">3. Sprites</a></div>
+				<div class="link"><a href="gameEngine.html">4. GameEngine</a></div>
+				<div class="link"><a href="kollision.html">5. Kollision</a></div>
+				<div class="link"><a href="keyboard.html">6. Keyboard</a></div>
+                <div class="link"><a href="bakgrund.html">7.Bakgrund</a></div>
+				<div class="link"><a href="animation.html">8. Animation</a></div>
+				<div class="link"><a href="laddabanor.html">9. Ladda banor</a></div>
+				<div class="link"><a href="finlir.html">10. Slut</a></div>
+
+			</div>
+			<div id=navMobile class=nav>
+				<div class="link"> <a href="index.html">Intro</a></div>
+				<div class="link"><a href="grunder.html">1. Skapa grunden</a></div>
+				<div class="link"id="currentNav"><a href="spritesheet.html">2. Spritesheet</a></div>
+				<div class="link"><a href="sprite.html"id="currentNav">3. Sprites</a></div>
+				<div class="link"><a href="gameEngine.html">4. GameEngine</a></div>
+				<div class="link"><a href="kollision.html">5. Kollision</a></div>
+				<div class="link"><a href="keyboard.html">6. Keyboard</a></div>
+                <div class="link"><a href="bakgrund.html">7.Bakgrund</a></div>
+				<div class="link"><a href="animation.html">8. Animation</a></div>
+				<div class="link"><a href="laddabanor.html">9. Ladda banor</a></div>
+				<div class="link"><a href="finlir.html">10. Finlir</a></div>
+
+			</div>
+
+
+				<div class="video"><iframe src="https://www.youtube.com/embed/0RExyh0vFq0" frameborder="0" allowfullscreen></iframe></div>
+				<div class=resources>
+				    <h3>Sprites</h3>
+				    <p>
+				         I dagens avsnitt skapar vi ett paket vid namn sprites. Där kommer vi skapa klasser för alla grafiska objekt som vi vill visa på skärmen och sedan initiera dem i Gamepanel. Vi kommer göra en fader-klass där alla olika former av objekt ska ärva ifrån, skälet vi gör detta är för att alla delar liknande egenskaper med varandra som position, stöd för bildobjekt, gravitation och eventuella hastigheter. Vi kommer göra faderklassen abstract, för att vi vill enbart skapa barn av detta objekt och det ska vara ej möjligt att skapa ett objekt av Sprite-klassen (fadern).
+				        
+					</p>
+					<br>
+					<a download href="downloads/TempoEp3.zip" class="downloadText">	<img src="img/folder.png" class="imgDownload">TempoEp3.zip</a>
+				</div>
+
+				<div id= "classes">
+					<ul class= "classNames">
+					<li class="className current" id="name1" onclick="showCode(event,class1)">GamePanel.java</li>
+					<li class="className " id="name2" onclick="showCode(event,class2)">Sprite.java</li>
+				    <li class="className " id="name3" onclick="showCode(event,class3)">Player.java</li>
+                    <li class="className " id="name4" onclick="showCode(event,class4)">Block.java</li>
+
+					</ul>
+
+					<div id=code>
+						<div id=class1>		<pre><code class = java>package tempo;
+
+import java.awt.Graphics;
+<span class=new>import java.awt.Graphics2D;</span>
+import javax.swing.JPanel;
+<span class=new>import tempo.sprite.Player;</span>
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class GamePanel extends JPanel {
+<span class=new>
+    public static final int BLOCK_SIZE = 75;
+    
+    private Spritesheet ss = new Spritesheet();
+    private Player player = new Player(200, 200, BLOCK_SIZE, BLOCK_SIZE * 2, ss.getSprite(1, 5, 1, 2), 0, 0, 10);
+    </span>
+    public void paintComponent(Graphics g) {
+<span class=new>        Graphics2D g2 = (Graphics2D) g;
+        player.paint(g);</span>
+    }
+
+}
+
+</pre></code></div>
+    
+    <div id=class2>		<pre><code class = java>
+package tempo.sprite;
+
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public abstract class Sprite {
+
+    private Rectangle rect;
+    private BufferedImage image;
+    private float dx, dy, gravity;
+    
+    public Sprite(int x, int y, int width, int height, BufferedImage image, float dx, float dy, float gravity) {
+        this.rect = new Rectangle(x, y, width, height);
+        this.image = image;
+        this.dx = dx;
+        this.dy = dy;
+        this.gravity = gravity;
+    }
+    
+    
+    public abstract void paint(Graphics g);
+    
+    public BufferedImage getImage() {
+        return image;
+    }
+    
+    public Rectangle getRectangle() {
+        return rect;
+    }
+    
+    
+}
+    </pre></code></div>
+    
+    <div id=class3>		<pre><code class = java>
+package tempo.sprite;
+
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class Player extends Sprite {
+    
+    public Player(int x, int y, int width, int height,  BufferedImage image, float dx, float dy, float gravity) {
+        super(x, y, width, height, image, dx, dy, gravity);
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        Rectangle r = super.getRectangle();
+        g.drawImage(super.getImage(), r.x, r.y, r.width, r.height, null);
+    }
+
+    
+    
+}
+    </pre></code></div>
+    
+    <div id=class4>		<pre><code class = java>
+package tempo.sprite;
+
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class Block extends Sprite {
+    
+    public Block(int x, int y, int width, int height, BufferedImage image, boolean coll) {
+        super(x, y, width, height, image, 0, 0, 0);
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        Rectangle r = super.getRectangle();
+        g.drawImage(super.getImage(), r.x, r.y, r.width, r.height, null);
+    }
+    
+}
+    </pre></code></div>
+	</div>
+</div>
+	<footer>Contact:<br>tempo@gmail.com</footer>
+		</div>
+
+	</body>
+</html>

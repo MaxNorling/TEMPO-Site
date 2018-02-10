@@ -1,0 +1,135 @@
+<html>
+	<head>
+		<title>TEMPO</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link rel="stylesheet" type="text/css" href="style.css">
+  		<link rel="stylesheet" type="text/css" href="styles/github.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+		<link rel="shortcut icon" href="img/TempoLogo.png">
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="script.js"></script>
+
+
+
+	</head>
+
+	<body>
+		<header>
+
+		<div id=logoContain><a href="index.html"><img src="img/TempoLogo.png" class="logo"></a>
+				<img id=menuButton src=img/menu.png>
+
+		</div>
+	</header>
+
+		<div id=nav class=nav>
+				<div class="link"> <a href="index.html">Intro</a></div>
+				<div class="link"><a href="grunder.html">1. Skapa grunden</a></div>
+				<div class="link"><a href="spritesheet.html">2. Spritesheet</a></div>
+				<div class="link"><a href="sprite.html">3. Sprites</a></div>
+				<div class="link" id="currentNav"><a href="gameEngine.html">4. GameEngine</a></div>
+				<div class="link"><a href="kollision.html">5. Kollision</a></div>
+				<div class="link"><a href="keyboard.html">6. Keyboard</a></div>
+                <div class="link"><a href="bakgrund.html">7.Bakgrund</a></div>
+                <div class="link"><a href="animation.html">8. Animation</a></div>
+				<div class="link"><a href="laddabanor.html">9. Ladda banor</a></div>
+				<div class="link"><a href="finlir.html">10. Slut</a></div>
+
+			</div>
+			<div id=navMobile class=nav>
+						<div class="link"> <a href="index.html">Intro</a></div>
+						<div class="link"><a href="grunder.html">1. Skapa grunden</a></div>
+						<div class="link"><a href="spritesheet.html">2. Spritesheet</a></div>
+						<div class="link"><a href="sprite.html">3. Sprites</a></div>
+						<div class="link" id="currentNav"><a href="gameEngine.html">4. GameEngine</a></div>
+						<div class="link"><a href="kollision.html">5. Kollision</a></div>
+						<div class="link"><a href="keyboard.html">6. Keyboard</a></div>
+                         <div class="link"><a href="bakgrund.html">7.Bakgrund</a></div>
+						<div class="link"><a href="animation.html">8. Animation</a></div>
+						<div class="link"><a href="laddabanor.html">9. Ladda banor</a></div>
+						<div class="link"><a href="finlir.html">10. Finlir</a></div>
+			</div>
+
+
+				<div class="video"><iframe src="https://www.youtube.com/embed/oFSZLZflGJ4" frameborder="0" allowfullscreen></iframe></div>
+
+				<div class=resources><h3>GameEngine</h3>
+					<p>I det här avsnittet går vi igenom klassen GameEngine i projektet. Vi tar hjälp ifrån klassen Runnable för att använda oss av threads (kallat "trådar" i videon). Med hjälp av detta kan vi kontrollera tiden i programmet för att sedan utnyttja informationen för att rita ut saker på skärmen och göra olika beräkningar medan programmet körs. Genom att göra en tråd och sedan använda tiden då tråden "sover" (läggs i viloläge) samt olika beräkningar i tidsskillnader, kan  vi säkerställa att  spelet körs på den hastigheten den är designad för.
+</p>
+					<a download href="downloads/TempoEp4.zip" class="downloadText">	<img src="img/folder.png" class="imgDownload">TempoEp4.zip</a>
+
+				</div>
+
+				<div id= "classes">
+					<ul class= "classNames">
+					<li class="className current" id="name1" onclick="showCode(event,class1)">GameEngine.java</li>
+
+					</ul>
+					<div id=code>
+						<div id=class1>		<pre><code class = java>package tempo;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class GameEngine <span class=new>implements Runnable</span>{
+    
+    GamePanel gp;
+    <span class=new>private boolean running = false;</span>
+    
+    public GameEngine(GamePanel gp) {
+        this.gp = gp;
+       <span class=new>start();</span>
+    }
+<span class=new>
+    public void start(){
+        running = true;
+        new Thread(this).start();
+    }
+    
+    public void run(){
+        long lastTime = System.nanoTime();
+        double nsPerTick = 1000000000D/60D;
+        
+        double delta = 0;
+        
+        while(running){
+            long now = System.nanoTime();
+            delta += (now - lastTime) / nsPerTick;
+            lastTime = now;
+            
+            try{
+                Thread.sleep(16);
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
+            
+            while(delta >= 1){
+                tick();
+                render();
+                delta -= 1;
+            }
+        }
+    }
+    
+    public void tick(){
+        gp.getPlayer().getRectangle().x++;
+    }
+    
+    public void render(){
+        gp.repaint();
+    }</span>
+}
+</code></pre></div>
+</div>
+
+</div>
+	<footer>Contact:<br>tempo@gmail.com</footer>
+
+
+	</body>
+</html>

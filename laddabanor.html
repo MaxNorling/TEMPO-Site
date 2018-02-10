@@ -1,0 +1,217 @@
+<html>
+	<head>
+		<title>TEMPO</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link rel="stylesheet" type="text/css" href="style.css">
+  		<link rel="stylesheet" type="text/css" href="styles/github.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+		<link rel="shortcut icon" href="img/TempoLogo.png">
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="script.js"></script>
+
+
+
+	</head>
+
+	<body>
+		<header>
+
+		<div id=logoContain><a href="index.html"><img src="img/TempoLogo.png" class="logo"></a>
+				<img id=menuButton src=img/menu.png>
+
+		</div>
+	</header>
+
+		<div id=nav class=nav>
+				<div class="link"> <a href="index.html">Intro</a></div>
+				<div class="link"><a href="grunder.html">1. Skapa grunden</a></div>
+				<div class="link"><a href="spritesheet.html">2. Spritesheet</a></div>
+				<div class="link"><a href="sprite.html">3. Sprites</a></div>
+				<div class="link"><a href="gameEngine.html">4. GameEngine</a></div>
+				<div class="link"><a href="kollision.html">5. Kollision</a></div>
+				<div class="link"><a href="keyboard.html">6. Keyboard</a></div>
+                <div class="link"><a href="bakgrund.html">7.Bakgrund</a></div>
+				<div class="link" ><a href="animation.html">8. Animation</a></div>
+				<div class="link"id="currentNav"><a href="laddabanor.html">9. Ladda banor</a></div>
+				<div class="link"><a href="finlir.html">10. Slut</a></div>
+
+			</div>
+			<div id=navMobile class=nav>
+						<div class="link"> <a href="index.html">Intro</a></div>
+						<div class="link"><a href="grunder.html">1. Skapa grunden</a></div>
+						<div class="link"><a href="spritesheet.html">2. Spritesheet</a></div>
+						<div class="link"><a href="sprite.html">3. Sprites</a></div>
+						<div class="link"><a href="gameEngine.html">4. GameEngine</a></div>
+						<div class="link"><a href="kollision.html">5. Kollision</a></div>
+						<div class="link"><a href="keyboard.html">6. Keyboard</a></div>
+                <div class="link"><a href="bakgrund.html">7.Bakgrund</a></div>
+						<div class="link"><a href="animation.html">8. Animation</a></div>
+						<div class="link" id="currentNav"><a href="laddabanor.html">9. Ladda banor</a></div>
+						<div class="link"><a href="finlir.html">10. Finlir</a></div>
+			</div>
+
+
+				<div class="video"><iframe src="https://www.youtube.com/embed/ievPOBiSMl0" frameborder="0" allowfullscreen></iframe></div>
+
+				<div class=resources>
+				    <h3>Ladda Banor</h3>Istället för att vi ska behöva hårdkoda våra banor i våran GamePanel klass kommer vi att läsa in våra banor från textfiler med hjälp av Javas BufferedReader. Vi kommer att tilldela olika tecken på tangentbordet olika sorters block och med två for loopar kommer vi att gå igenom våran textfil tecken för tecken och placera ut blocken efter vilken xy position de har i textfilen. <br>
+					<a download href="downloads/TempoEp9.zip" class="downloadText">	<img src="img/folder.png" class="imgDownload">TempoEp9.zip</a>
+				</div>
+
+				<div id= "classes">
+					<ul class= "classNames">
+					<li class="className current" id="name1" onclick="showCode(event,class1)">Level.java</li>
+					<li class="className" id="name2" onclick="showCode(event,class2)">GamePanel.java</li>
+
+					</ul>
+					<div id=code>
+						<div id=class1>		<pre><code class = java>/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package tempo.sprite;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Logger;
+import tempo.Spritesheet;
+
+/**
+ *
+ * @author Elev
+ */
+public class Level {
+    private Spritesheet ss;
+    private ArrayList<Block> level = new ArrayList<Block>();
+    private int blockSize;
+    
+    public Level(Spritesheet ss, String level,int blockSize){
+        this.ss = ss;
+        this.blockSize = blockSize;
+        int row = 0;
+        
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(level));
+                String line;
+                
+                while((line = br.readLine())!= null){
+                    String tempStr = line;
+                    
+                    for(int j =0; j < tempStr.length(); j++){
+                        char chr = tempStr.charAt(j);
+                        switch(chr){
+                            case 'd': addBlock(true, j, row,1,1,1,0); break;
+                            case '-': break;
+                        }
+                        if(j == tempStr.length()-1 ){
+                           row++; 
+                        }
+                    }
+                }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Level.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    public void addBlock(boolean coll, int x, int y, int width, int height, int imgX ,int imgY ){
+        level.add(new Block(x*blockSize,y*blockSize,width*blockSize,height*blockSize, ss.getSprite(imgX,imgY,width,height),coll));
+    }
+    public ArrayList<Block> getLevel(){
+        return level;
+    }
+    
+}
+</code></pre></div>
+
+<div id=class2>		<pre><code class = java>
+package tempo;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import javax.swing.JPanel;
+import tempo.sprite.Block;
+<span class=new>import tempo.sprite.Level;</span>
+import tempo.sprite.Player;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class GamePanel extends JPanel {
+    
+    public static final int BLOCK_SIZE = 75;
+    public ArrayList<Block> blocks = new ArrayList<Block>();
+    public ArrayList<Background> backgrounds = new ArrayList<Background>();
+    <span class=new>private Level level;</span>
+    
+    private Spritesheet ss = new Spritesheet();
+    private Player player = new Player(200, 200, BLOCK_SIZE, BLOCK_SIZE * 2, ss.getSprite(1, 5, 1, 2), 10, 0, 10);
+    
+    
+    
+    public GamePanel(){
+        int x = 0;
+        int y = 400;
+    
+        player.createAnimation();
+        player.getAnimation().setAnimation(/*Running (0-5)*/ getPS(0,3), getPS(1,3), getPS(2,3), getPS(3,3), getPS(4,3), getPS(5,3), /*Idle (6-8)*/ getPS(0,5), getPS(1,5), getPS(2,5) /*Jumping (9)*/, getPS(3,5), /*Falling (10)*/ getPS(4,5));
+        backgrounds.add(new Background(0f, 0, 0, 1280, 720, ss.getImage("src/resources/pics/clouds.png"),player));
+        backgrounds.add(new Background(0.1f, 0, 500, 1280, 720, ss.getImage("src/resources/pics/mountains_final1.png"),player));
+        <span class=new>level = new Level(ss,"level1",BLOCK_SIZE);</span>
+    }
+    
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        for(Background b: backgrounds){
+            if(b.getVelocityX() > 0){
+                g2.translate(0, -(float)player.getRectangle().y+(460-75) * b.getVelocityX() - (float)b.getRectangle().height*b.getVelocityX()*0.5);
+            }
+            b.paint(g2);
+            resetTranslate(g2);
+            
+        }
+        g2.translate(-player.getRectangle().x + (640-32), -player.getRectangle().y + (460 -75));
+            
+        player.paint(g);
+        for(Block b:<span class=new> level.getLevel()</span>){
+            b.paint(g2);
+        }
+        
+    }
+    public void resetTranslate(Graphics2D g2){
+        Rectangle r = g2.getClipBounds();
+        g2.translate(r.x,r.y);
+    }
+    public Player getPlayer(){
+        return player;
+    }
+    public BufferedImage getPS(int x, int y) {
+        return ss.getSprite(x, y, 1, 2);
+    }
+    <span class=new>public Level getLevel(){
+        return  level;
+    }</span>
+
+}
+</code></pre></div>
+
+</div>
+</div>
+	<footer>Contact:<br>tempo@gmail.com</footer>
+
+
+	</body>
+</html>

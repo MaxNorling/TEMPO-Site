@@ -1,0 +1,308 @@
+<html>
+	<head>
+		<title>TEMPO</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link rel="stylesheet" type="text/css" href="style.css">
+  		<link rel="stylesheet" type="text/css" href="styles/github.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+		<link rel="shortcut icon" href="img/TempoLogo.png">
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="script.js"></script>
+
+
+
+	</head>
+
+	<body>
+		<header>
+
+		<div id=logoContain><a href="index.html"><img src="img/TempoLogo.png" class="logo"></a>
+				<img id=menuButton src=img/menu.png>
+
+		</div>
+	</header>
+
+		<div id=nav class=nav>
+				<div class="link"> <a href="index.html">Intro</a></div>
+				<div class="link"><a href="grunder.html">1. Skapa grunden</a></div>
+				<div class="link"><a href="spritesheet.html">2. Spritesheet</a></div>
+				<div class="link"><a href="sprite.html">3. Sprites</a></div>
+				<div class="link"><a href="gameEngine.html">4. GameEngine</a></div>
+				<div class="link" id="currentNav"><a href="kollision.html">5. Kollision</a></div>
+				<div class="link"><a href="keyboard.html">6. Keyboard</a></div>
+                <div class="link"><a href="bakgrund.html">7.Bakgrund</a></div>
+				<div class="link"><a href="animation.html">8. Animation</a></div>
+				<div class="link"><a href="laddabanor.html">9. Ladda banor</a></div>
+				<div class="link"><a href="finlir.html">10. Slut</a></div>
+
+			</div>
+			<div id=navMobile class=nav>
+						<div class="link"> <a href="index.html">Intro</a></div>
+						<div class="link"><a href="grunder.html">1. Skapa grunden</a></div>
+						<div class="link"><a href="spritesheet.html">2. Spritesheet</a></div>
+						<div class="link"><a href="sprite.html">3. Sprites</a></div>
+						<div class="link"><a href="gameEngine.html">4. GameEngine</a></div>
+						<div class="link"id="currentNav"><a href="kollision.html">5. Kollision</a></div>
+						<div class="link"><a href="keyboard.html">6. Keyboard</a></div>
+                <div class="link"><a href="bakgrund.html">7.Bakgrund</a></div>
+						<div class="link"><a href="animation.html">8. Animation</a></div>
+						<div class="link"><a href="laddabanor.html">9. Ladda banor</a></div>
+						<div class="link"><a href="finlir.html">10. Finlir</a></div>
+			</div>
+
+
+				<div class="video"><iframe src="https://www.youtube.com/embed/5cOHxAtnueY" frameborder="0" allowfullscreen></iframe></div>
+
+				<div class=resources><h3>Kollision</h3><p>
+					I detta avsnitt går vi igenom hur man skapar kollision med block. Detta gör vi för att vi senare ska kunna hoppa och gå på olika objekt. 
+<br>
+Det går att kolla om man kolliderar på många olika sätt. Vi använder oss av en enkel metod där man först kollar om spelaren är inuti ett block, och sedan med hjälp av matte räknar ut på vilken sida av blocket spelaren krockat. Utifrån detta kan vi då avgöra vart spelaren ska flyttas för att inte längre vara i blocket utan istället där den var innan.<br>
+				</p>					<a download href="downloads/TempoEp5.zip" class="downloadText">	<img src="img/folder.png" class="imgDownload">TempoEp5.zip</a>
+
+				</div>
+
+				<div id= "classes">
+					<ul class= "classNames">
+					<li class="className current" id="name1" onclick="showCode(event,class1)">Collision.java</li>
+					<li class="className" id="name2" onclick="showCode(event,class2)">Player.java</li>
+					<li class="className" id="name3" onclick="showCode(event,class3)">Block.java</li>
+					<li class="className" id="name4" onclick="showCode(event,class4)">GamePanel.java</li>
+					<li class="className" id="name5" onclick="showCode(event,class5)">GameEngine.java</li>
+					</ul>
+					<div id=code>
+						<div id=class1><pre><code class = java>/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package tempo;
+
+import java.awt.Rectangle;
+
+/**
+ *
+ * @author Elev
+ */
+public class Collision {
+    public boolean isIntersect(Rectangle a_rect, Rectangle o_rect){
+        return a_rect.intersects(o_rect);
+    }
+    public double collisionRotation(Rectangle a_rect, Rectangle o_rect){
+        return Math.toDegrees(Math.atan2(o_rect.x-a_rect.x,o_rect.y-a_rect.y));
+    }
+    public Rectangle getCollision(Rectangle a_rect, Rectangle o_rect){
+        Rectangle tempRect = new Rectangle();
+        if(isIntersect(a_rect,o_rect)){
+            //Right Side
+            if(collisionRotation(a_rect,o_rect) > -140f && collisionRotation(a_rect,o_rect) < -26f ){
+                tempRect = a_rect;
+                tempRect.x = o_rect.x + o_rect.width;
+                return tempRect;
+            }
+            //Left Side
+            if(collisionRotation(a_rect,o_rect) < 140f && collisionRotation(a_rect,o_rect) > 26f ){
+                tempRect = a_rect;
+                tempRect.x = o_rect.x - a_rect.width;
+                return tempRect;
+            }
+            //Top Side
+            if(collisionRotation(a_rect,o_rect) > -26f && collisionRotation(a_rect,o_rect) < 26f ){
+                tempRect = a_rect;
+                tempRect.y = o_rect.y - a_rect.height;
+                return tempRect;
+            }
+            //Bottom Side
+            if(collisionRotation(a_rect,o_rect) < 140f && collisionRotation(a_rect,o_rect) > 140f ){
+                tempRect = a_rect;
+                tempRect.y = o_rect.y + a_rect.height;
+                return tempRect;
+            }
+        }
+        return a_rect;
+    }
+    public boolean getTopCollision(Rectangle a_rect, Rectangle o_rect){
+        if(isIntersect(a_rect,o_rect)){
+            if(collisionRotation(a_rect,o_rect) > -26f && collisionRotation(a_rect,o_rect) < 26f ){
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean getBottomCollision(Rectangle a_rect, Rectangle o_rect){
+        if(isIntersect(a_rect,o_rect)){
+            if(collisionRotation(a_rect,o_rect) > 26f && collisionRotation(a_rect,o_rect) < 26f ){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+</code></pre></div>
+<div id="class2"><pre><code class = java>
+package tempo.sprite;
+
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class Player extends Sprite {
+    
+    public Player(int x, int y, int width, int height,  BufferedImage image, float dx, float dy, float gravity) {
+        super(x, y, width, height, image, dx, dy, gravity);
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        Rectangle r = super.getRectangle();
+        g.drawImage(super.getImage(), r.x, r.y, r.width, r.height, null);
+    }
+
+    <span class=new>public void tick(){
+        
+    }</span>
+    
+}
+
+	</code></pre></div>
+	<div id=class3>		<pre><code class = java>package tempo.sprite;
+
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class Block extends Sprite {
+    <span class=new>public boolean coll;</span>
+    
+    public Block(int x, int y, int width, int height, BufferedImage image, boolean coll) {
+        super(x, y, width, height, image, 0, 0, 0);
+        <span class=new>this.coll = coll;</span>
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        Rectangle r = super.getRectangle();
+        g.drawImage(super.getImage(), r.x, r.y, r.width, r.height, null);
+    }
+    
+}
+</code></pre></div>
+<div id=class4>		<pre><code class = java>
+package tempo;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import javax.swing.JPanel;
+<span class=new>import tempo.sprite.Block;</span>
+import tempo.sprite.Player;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class GamePanel extends JPanel {
+    
+    public static final int BLOCK_SIZE = 75;
+    
+    private Spritesheet ss = new Spritesheet();
+    private Player player = new Player(200, 200, BLOCK_SIZE, BLOCK_SIZE * 2, ss.getSprite(1, 5, 1, 2), 0, 0, 10);
+    <span class=new>public Block block = new Block(800, 200, BLOCK_SIZE, BLOCK_SIZE, ss.getSprite(1, 1, 1, 1), true);</span>
+    
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        player.paint(g);
+        <span class=new>block.paint(g);</span>
+    }
+    
+    <span class=new>public Player getPlayer(){
+        return player;
+    }</span>
+
+}
+</code></pre></div>
+<div id=class5>		<pre><code class = java>package tempo;
+
+/**
+ *
+ * @author Oscar Almqvist
+ */
+public class GameEngine implements Runnable{
+    
+    GamePanel gp;
+    <span class=new>Collision collision = new Collision();</span>
+    private boolean running = false;
+    
+    public GameEngine(GamePanel gp) {
+        this.gp = gp;
+        start();
+    }
+    
+    public void start(){
+        running = true;
+        new Thread(this).start();
+    }
+    
+    public void run(){
+        long lastTime = System.nanoTime();
+        double nsPerTick = 1000000000D/60D;
+        
+        double delta = 0;
+        
+        while(running){
+            long now = System.nanoTime();
+            delta += (now - lastTime) / nsPerTick;
+            lastTime = now;
+            
+            try{
+                Thread.sleep(16);
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
+            
+            while(delta >= 1){
+                tick();
+                render();
+                delta -= 1;
+            }
+        }
+    }
+    
+    public void tick(){
+        gp.getPlayer().getRectangle().x++;
+        <span class=new>checkCollision();</span>
+    }
+    
+    public void render(){
+        gp.repaint();
+    }
+    <span class=new>public void checkCollision(){
+        if(gp.block.coll){
+            if(collision.getTopCollision(gp.getPlayer().getRectangle(), gp.block.getRectangle())){
+                //KOLLIDERA MED MARK
+            }
+            if(collision.getBottomCollision(gp.getPlayer().getRectangle(), gp.block.getRectangle())){
+                //KOLLIDERA MED TAK
+            }
+            gp.getPlayer().setRectangle(collision.getCollision(gp.getPlayer().getRectangle(), gp.block.getRectangle()));
+        }
+    }</span>
+}
+</code></pre></div>
+</div>
+</div>
+	<footer>Contact:<br>tempo@gmail.com</footer>
+
+
+	</body>
+</html>
